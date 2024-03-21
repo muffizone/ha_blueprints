@@ -191,18 +191,18 @@ condition:
       {% endif %}
 action:
   - choose:
-      # - conditions:
-      #     - condition: template
-      #       value_template: "{{ trigger.to_state.state == 'on' }}"
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.to_state.state == 'on' }}"
       #     - condition: numeric_state
       #       entity_id: !input luminance_sensor
       #       below: !input luminance_required
-      #   sequence:
-      #     - condition: time
-      #       after: !input time_default_start
-      #       before: !input time_default_end
-      #     - service: light.turn_on
-      #       target: !input light_target
+        sequence:
+          - condition: time
+            after: !input time_default_start
+            before: !input time_default_end
+          - service: light.turn_on
+            target: !input light_target
       - conditions:
           - condition: template
             value_template: "{{ trigger.to_state.state == 'off' }}"
