@@ -6,7 +6,7 @@ blueprint:
     Inputs and actions are:\n
     - Turn on lights or scenes when motion is detected. The trigger can be a motion detector or anything that switches between ON and OFF. You can use several motion detectors.\n
     - The activation can be triggered between a certain time slot (so the bathroom light does not turn on in the middle of the night)\n
-    - You can specify a luminance value: only run when it is darker than indicated\n
+    # - You can specify a luminance value: only run when it is darker than indicated\n
     - Sun horizon setting: you can run the action always, or only when the sun is above or below the horizon.\n
     - You can adjust the horizon by giving an elevation adjustment number\n
     - Wait time for turning off\n
@@ -29,24 +29,24 @@ blueprint:
         target:
           entity:
             domain: light
-    luminance_sensor:
-      name: Illuminance sensor
-      description: This sensor will be used to determine the illumination.
-      default:
-      selector:
-        entity:
-          domain: sensor
-          device_class: illuminance
-          multiple: false
-    luminance_required:
-      name: Required Lux Level
-      description: Lux level below which the automation will run.
-      default: 100
-      selector:
-        number:
-          min: 0
-          max: 1000
-          unit_of_measurement: lx
+    # luminance_sensor:
+    #   name: Illuminance sensor
+    #   description: This sensor will be used to determine the illumination.
+    #   default:
+    #   selector:
+    #     entity:
+    #       domain: sensor
+    #       device_class: illuminance
+    #       multiple: false
+    # luminance_required:
+    #   name: Required Lux Level
+    #   description: Lux level below which the automation will run.
+    #   default: 100
+    #   selector:
+    #     number:
+    #       min: 0
+    #       max: 1000
+    #       unit_of_measurement: lx
     no_motion_wait:
       name: Wait time
       description: Time to leave the light on after last motion is detected.
@@ -151,8 +151,8 @@ variables:
   elevation: !input elevation
   elevation_adjustment: !input elevation_adjustment
   motion_entity: !input motion_entity
-  luminance_sensor: !input luminance_sensor
-  luminance_required: !input luminance_required
+  # luminance_sensor: !input luminance_sensor
+  # luminance_required: !input luminance_required
 trigger:
   - platform: state
     entity_id: !input motion_entity
@@ -191,18 +191,18 @@ condition:
       {% endif %}
 action:
   - choose:
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.to_state.state == 'on' }}"
-          - condition: numeric_state
-            entity_id: !input luminance_sensor
-            below: !input luminance_required
-        sequence:
-          - condition: time
-            after: !input time_default_start
-            before: !input time_default_end
-          - service: light.turn_on
-            target: !input light_target
+      # - conditions:
+      #     - condition: template
+      #       value_template: "{{ trigger.to_state.state == 'on' }}"
+      #     - condition: numeric_state
+      #       entity_id: !input luminance_sensor
+      #       below: !input luminance_required
+      #   sequence:
+      #     - condition: time
+      #       after: !input time_default_start
+      #       before: !input time_default_end
+      #     - service: light.turn_on
+      #       target: !input light_target
       - conditions:
           - condition: template
             value_template: "{{ trigger.to_state.state == 'off' }}"
